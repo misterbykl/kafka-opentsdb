@@ -62,8 +62,7 @@ public class Consumer {
         if (!records.isEmpty()) {
             for (ConsumerRecord<String, String> record : records) {
                 if (this.getTopicList().get(0).equals(record.topic())) {
-                    /* process message */
-                    this.service.saveMessage(record.value());
+                    this.service.shreadAndSaveMessage(record.value());
                     logger.info("Message is processed");
                 }
             }
