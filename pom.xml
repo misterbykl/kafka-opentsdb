@@ -13,8 +13,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -22,7 +22,6 @@
 
     <properties>
         <spring.version>4.3.4.RELEASE</spring.version>
-        <log4j.version>2.7</log4j.version>
         <kafka.version>0.9.0.1</kafka.version>
         <asynchbase.version>1.7.2</asynchbase.version>
         <hbase.version>1.2.4</hbase.version>
@@ -46,16 +45,6 @@
             <version>${spring.version}</version>
         </dependency>
         <!-- log -->
-        <!--<dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
