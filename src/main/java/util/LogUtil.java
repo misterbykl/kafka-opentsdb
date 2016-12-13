@@ -1,7 +1,8 @@
 package util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * misterbaykal
@@ -11,9 +12,7 @@ import org.apache.logging.log4j.Logger;
 public class LogUtil {
     private static final String EXCEPTION_LOGGER_NAME = "exceptionLogger";
     private static final String ROOT_LOGGER_NAME = "rootLogger";
-    public static final String CONTEXT_SELECTOR_KEY = "Log4jContextSelector";
-    public static final String CONTEXT_SELECTOR_VALUE = "org.apache.logging.log4j.core.async.AsyncLoggerContextSelector";
-    public static final String LOG4J_CONFIGURATION_FILE = "log4j.configurationFile";
+    public static final String SLF4J_CONFIGURATION_FILE = "slf4j.configurationFile";
 
     /**
      * Instantiates a new Log util.
@@ -35,7 +34,7 @@ public class LogUtil {
      * 12/12/16 22:04
      */
     private static Logger getLogger(String argLoggerName) {
-        return LogManager.getLogger(argLoggerName);
+        return LoggerFactory.getLogger(argLoggerName);
     }
 
     /**

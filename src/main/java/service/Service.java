@@ -1,17 +1,12 @@
 package service;
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.client.HTable;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.codec.Charsets;
 import org.hbase.async.HBaseClient;
+import org.hbase.async.PutRequest;
 import util.ExceptionUtil;
-import util.LogUtil;
 import util.StringUtil;
 
-import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -22,16 +17,35 @@ import java.util.Locale;
  * 12/12/16 22:34
  */
 public class Service {
-    private final Logger logger = LogUtil.getRootLogger();
 
-    private HBaseClient client = new HBaseClient("localhost:2181");
+    private HBaseClient client;
     private String tableName;
+    private static byte[] rowKey = new byte[1];
+
+    /**
+     * Instantiates a new Service.
+     *
+     * @param server
+     * @param tableName <p>
+     *                  misterbaykal
+     *                  <p>
+     *                  13/12/16 23:25
+     */
+    Service(String server, String tableName) {
+        client = new HBaseClient(server);
+        this.tableName = tableName;
+        rowKey[0] = 0;
+        System.out.println(StringUtil.append("Service started with rowKey=1. - Server: ", server, ". Table name: ", tableName));
+    }
 
     /**
      * Shred and save message.
      * <p>
      * Shred the message and insert into OpenTSDB
      * <p>
+     * izmit.raw.9G5_DTGGH28,2012-08-08 06:28:35,145.8146,100
+     * izmit.raw.9G5_DTGGH28,2012-08-08 06:28:37,145.9306,100
+     * izmit.raw.9G5_DTGGH28,2012-08-08 06:28:38,145.8502,100
      * izmit.raw.9G5_DTGGH28,2012-08-08 06:28:40,145.8141,100
      * <p>
      * metric : izmit.raw.9G5_DTGGH28
@@ -47,8 +61,9 @@ public class Service {
      *              <p>
      *              12/12/16 22:34
      */
-    public void shreadAndSaveMessage(String value) {
+    public void parseAndSaveMessage(String value) {
         try {
+            rowKey[0]++;
             String[] valueArray = value.split(",");
 
             String metric = valueArray[0];
@@ -61,15 +76,20 @@ public class Service {
             Date date = format.parse(timestamp);
             long epochTime = date.getTime();
 
-            Configuration config = HBaseConfiguration.create();
-            HTable table = new HTable(config, this.tableName);
+            String data = StringUtil.append(metric, ",", epochTime, ",", val, ",", tagvalue, ",", tagkey);
 
-//            PutRequest put/*Request = new PutRequest(tableName.getBytes(Charsets.UTF_8), rowKey,
-//                    columnFamily.getBytes(Charsets.UTF_8), "payload".getBytes(Charsets.UTF_8),
-//                    data.getByte*/s(Charsets.UTF_8));
+            String columnFamily = "cf";
+            String columnQualifier = "a";
 
-        } catch (ParseException | IOException e) {
-            logger.error(StringUtil.append("Exception while working on message: ", value));
+            PutRequest putRequest = new PutRequest(this.tableName.getBytes(Charsets.UTF_8), rowKey,
+                    columnFamily.getBytes(Charsets.UTF_8), columnQualifier.getBytes(Charsets.UTF_8),
+                    data.getBytes(Charsets.UTF_8));
+
+            client.put(putRequest);
+
+            System.out.println("Message is saved");
+        } catch (Exception e) {
+            System.out.println(StringUtil.append("Exception while working on message: ", value));
             ExceptionUtil.getStackTraceString(e, "shredAndSaveMassage");
         }
     }
