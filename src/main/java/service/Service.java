@@ -1,15 +1,14 @@
 package service;
 
-import org.apache.commons.codec.Charsets;
-import org.hbase.async.HBaseClient;
-import org.hbase.async.PutRequest;
+import net.opentsdb.core.TSDB;
+import net.opentsdb.core.Tags;
+import net.opentsdb.core.WritableDataPoints;
+import net.opentsdb.utils.Config;
 import util.ExceptionUtil;
 import util.StringUtil;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * misterbaykal
@@ -18,41 +17,44 @@ import java.util.Locale;
  */
 public class Service {
 
-    private HBaseClient client;
-    private String tableName;
-    private static byte[] rowKey = new byte[1];
+    private TSDB tsdb;
+    private String wordSplitter = ",";
 
     /**
      * Instantiates a new Service.
      *
-     * @param server
-     * @param tableName <p>
-     *                  misterbaykal
-     *                  <p>
-     *                  13/12/16 23:25
+     * @param tsdbConfigPath the path to tsdb configuration
+     * @param wordSplitter   the character to identify how to split words
+     *                       <p>
+     *                       <p>
+     *                       misterbaykal
+     *                       <p>
+     *                       13/12/16 23:25
      */
-    Service(String server, String tableName) {
-        client = new HBaseClient(server);
-        this.tableName = tableName;
-        rowKey[0] = 0;
-        System.out.println(StringUtil.append("Service started with rowKey=1. - Server: ", server, ". Table name: ", tableName));
+    Service(String tsdbConfigPath, String wordSplitter) {
+        try {
+            Config config = new Config(tsdbConfigPath);
+            this.tsdb = new TSDB(config);
+            this.wordSplitter = wordSplitter;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(StringUtil.append("Service started. - Config Path: ", tsdbConfigPath, ". Word Splitter: ", wordSplitter));
     }
 
     /**
-     * Shred and save message.
+     * Parse and save message.
      * <p>
-     * Shred the message and insert into OpenTSDB
+     * Parse the message and insert into OpenTSDB
      * <p>
-     * izmit.raw.9G5_DTGGH28,2012-08-08 06:28:35,145.8146,100
-     * izmit.raw.9G5_DTGGH28,2012-08-08 06:28:37,145.9306,100
-     * izmit.raw.9G5_DTGGH28,2012-08-08 06:28:38,145.8502,100
-     * izmit.raw.9G5_DTGGH28,2012-08-08 06:28:40,145.8141,100
+     * izmit.raw.9G5_DTGGH28 1481171320000 41 host=web01 cpu=0
      * <p>
      * metric : izmit.raw.9G5_DTGGH28
-     * timestamp : 2012-08-08 06:28:35 (epoch)
-     * value: 145.8146
-     * tagkey: confidence
-     * tagvalue: 100
+     * timestamp : 1481171320000 (epoch)
+     * value: 41
+     * tagkey: host=web01
+     * tagvalue: cpu=0
      *
      * @param value the value
      *              <p>
@@ -63,29 +65,33 @@ public class Service {
      */
     public void parseAndSaveMessage(String value) {
         try {
-            rowKey[0]++;
-            String[] valueArray = value.split(",");
+            String[] words = value.split(this.wordSplitter);
 
-            String metric = valueArray[0];
-            String timestamp = valueArray[1];
-            String val = valueArray[2];
-            Integer tagvalue = Integer.parseInt(valueArray[3]);
-            String tagkey = "confidence";
+            final HashMap<String, String> tags = new HashMap<>();
+            for (int i = 3; i < words.length; i++) {
+                if (!words[i].isEmpty()) {
+                    Tags.parse(tags, words[i]);
+                }
+            }
 
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-            Date date = format.parse(timestamp);
-            long epochTime = date.getTime();
+            long timestamp = Tags.parseLong(words[1]);
+            final String key = words[0] + tags;
 
-            String data = StringUtil.append(metric, ",", epochTime, ",", val, ",", tagvalue, ",", tagkey);
+            HashMap<String, WritableDataPoints> datapoints = new HashMap<>();
+            WritableDataPoints points = datapoints.get(key);
 
-            String columnFamily = "cf";
-            String columnQualifier = "a";
+            if (points == null) {
+                points = tsdb.newDataPoints();
+                points.setSeries(words[0], tags);
+                points.setBatchImport(true);
+                datapoints.put(key, points);
+            }
 
-            PutRequest putRequest = new PutRequest(this.tableName.getBytes(Charsets.UTF_8), rowKey,
-                    columnFamily.getBytes(Charsets.UTF_8), columnQualifier.getBytes(Charsets.UTF_8),
-                    data.getBytes(Charsets.UTF_8));
-
-            client.put(putRequest);
+            if (Tags.looksLikeInteger(words[2])) {
+                points.addPoint(timestamp, Tags.parseLong(words[2]));
+            } else {
+                points.addPoint(timestamp, Float.parseFloat(words[2]));
+            }
 
             System.out.println("Message is saved");
         } catch (Exception e) {

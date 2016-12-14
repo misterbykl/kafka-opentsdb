@@ -1,19 +1,11 @@
-import org.apache.commons.codec.Charsets;
-import org.hbase.async.GetRequest;
-import org.hbase.async.HBaseClient;
-import org.hbase.async.KeyValue;
-import org.hbase.async.PutRequest;
-import util.ExceptionUtil;
-import util.StringUtil;
+import net.opentsdb.core.TSDB;
+import net.opentsdb.core.Tags;
+import net.opentsdb.core.WritableDataPoints;
+import net.opentsdb.utils.Config;
 
-import java.nio.ByteBuffer;
-import java.text.DateFormat;
+import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Locale;
+import java.util.HashMap;
 
 /**
  * misterbaykal
@@ -22,62 +14,44 @@ import java.util.Locale;
  */
 public class BasicTests {
     public static void main(String[] args) throws ParseException {
-
-        //parseAndSaveMessage("abc,2012-08-08 06:28:40,145.8141,100");
-        getLastRowKey();
+        BasicTests.tsdb();
     }
 
-    private static void getLastRowKey(){
-        HBaseClient client = new HBaseClient("localhost:2181");
-
-        byte[] rowKey = new byte[1];
-        rowKey[0] = 1;
-
-        GetRequest getRequest = new GetRequest("test".getBytes(Charsets.UTF_8), rowKey);
-
-        ArrayList<KeyValue> kvs = null;
+    private static void tsdb() {
         try {
-            kvs = client.get(getRequest).join();
-            System.out.println(Arrays.toString(kvs.get(0).value()));
-        } catch (Exception e) {
+            final Config config = new Config("/path/to/opentsdbconfig");
+            final TSDB tsdb = new TSDB(config);
+
+            String[] words = "abc,1481171320000,41,host=web01,cpu=0".split(" ");
+
+            final HashMap<String, String> tags = new HashMap<>();
+            for (int i = 3; i < words.length; i++) {
+                if (!words[i].isEmpty()) {
+                    Tags.parse(tags, words[i]);
+                }
+            }
+
+            long timestamp = Tags.parseLong(words[1]);
+            final String key = words[0] + tags;
+
+            HashMap<String, WritableDataPoints> datapoints = new HashMap<>();
+            WritableDataPoints points = datapoints.get(key);
+
+            if (points == null) {
+                points = tsdb.newDataPoints();
+                points.setSeries(words[0], tags);
+                points.setBatchImport(true);
+                datapoints.put(key, points);
+            }
+
+            if (Tags.looksLikeInteger(words[2])) {
+                points.addPoint(timestamp, Tags.parseLong(words[2]));
+            } else {
+                points.addPoint(timestamp, Float.parseFloat(words[2]));
+            }
+
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    private static void shreadAndSaveMessage(String value) {
-        try {
-            HBaseClient client = new HBaseClient("localhost:2181");
-
-            String[] valueArray = value.split(",");
-
-            String metric = valueArray[0];
-            String timestamp = valueArray[1];
-            String val = valueArray[2];
-            Integer tagvalue = Integer.parseInt(valueArray[3]);
-            String tagkey = "a";
-
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-            Date date = format.parse(timestamp);
-            long epochTime = date.getTime();
-
-            String data = StringUtil.append(metric, ",", epochTime, ",", val, ",", tagvalue, ",", tagkey);
-
-            byte[] rowKey = new byte[1];
-            rowKey[0] = 1;
-
-            String columnFamily = "cf";
-            String columnQualifier = "a";
-            String tableName = "test";
-
-            PutRequest putRequest = new PutRequest(tableName.getBytes(Charsets.UTF_8), rowKey,
-                    columnFamily.getBytes(Charsets.UTF_8), columnQualifier.getBytes(Charsets.UTF_8),
-                    data.getBytes(Charsets.UTF_8));
-
-            client.put(putRequest);
-            //rowKey[0]++;
-
-        } catch (Exception e) {
-            ExceptionUtil.getStackTraceString(e, "shredAndSaveMessage");
         }
     }
 }

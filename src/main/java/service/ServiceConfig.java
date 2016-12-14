@@ -25,7 +25,7 @@ public class ServiceConfig {
      * 12/12/16 22:37
      */
     @Bean
-    public Service service(@Value("${hbase.server}") String server, @Value("${hbase.table.name}") String tableName) {
-        return new Service(server, tableName);
+    public Service service(@Value("${opentsdb.config.path}") String tsdbConfigPath, @Value("${opentsdb.word.splitter}") String wordSplitter) {
+        return new Service(tsdbConfigPath, wordSplitter);
     }
 }
