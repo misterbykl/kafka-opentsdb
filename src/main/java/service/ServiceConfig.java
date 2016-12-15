@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * misterbaykal
+ * Emre Baykal
  * <p>
  * 12/12/16 22:37
  */
@@ -20,7 +20,7 @@ public class ServiceConfig {
      * @return the service
      * <p>
      * <p>
-     * misterbaykal
+     * Emre Baykal
      * <p>
      * 12/12/16 22:37
      */
