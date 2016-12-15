@@ -3,7 +3,7 @@ package util;
 import java.util.Properties;
 
 /**
- * misterbaykal
+ * Emre Baykal
  * <p>
  * 12/12/16 21:55
  */
@@ -14,7 +14,7 @@ public class ApplicationUtil {
     /**
      * Sets system properties.
      * <p>
-     * misterbaykal
+     * Emre Baykal
      * <p>
      * 12/12/16 21:55
      */

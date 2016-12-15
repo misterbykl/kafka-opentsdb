@@ -8,7 +8,7 @@ import util.ExceptionUtil;
 /**
  * Main.java
  * <p>
- * misterbaykal
+ * Emre Baykal
  * <p>
  * 12/12/16 21:42
  */
@@ -18,7 +18,7 @@ public class Main {
      *
      * @param args the input arguments
      *             <p>
-     *             misterbaykal
+     *             Emre Baykal
      *             <p>
      *             12/12/16 21:42
      */
