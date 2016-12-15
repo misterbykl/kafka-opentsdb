@@ -30,7 +30,6 @@ public class Consumer {
      * @param topics   the topics
      * @param consumer the consumer
      *                 <p>
-     *                 <p>
      *                 Emre Baykal
      *                 <p>
      *                 12/12/16 22:26
@@ -46,7 +45,6 @@ public class Consumer {
 
     /**
      * Consume.
-     * <p>
      * <p>
      * Emre Baykal
      * <p>
@@ -66,7 +64,6 @@ public class Consumer {
 
     /**
      * Get Topics
-     * <p>
      * <p>
      * Emre Baykal
      * <p>
