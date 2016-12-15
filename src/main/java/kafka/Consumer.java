@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * misterbaykal
+ * Emre Baykal
  * <p>
  * 12/12/16 22:17
  */
@@ -31,7 +31,7 @@ public class Consumer {
      * @param consumer the consumer
      *                 <p>
      *                 <p>
-     *                 misterbaykal
+     *                 Emre Baykal
      *                 <p>
      *                 12/12/16 22:26
      */
@@ -48,7 +48,7 @@ public class Consumer {
      * Consume.
      * <p>
      * <p>
-     * misterbaykal
+     * Emre Baykal
      * <p>
      * 12/12/16 22:26
      */
@@ -68,7 +68,7 @@ public class Consumer {
      * Get Topics
      * <p>
      * <p>
-     * misterbaykal
+     * Emre Baykal
      * <p>
      * 12/12/16 22:26
      */

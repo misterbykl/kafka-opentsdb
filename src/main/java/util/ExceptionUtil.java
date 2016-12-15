@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * misterbaykal
+ * Emre Baykal
  * <p>
  * 12/12/16 23:27
  */
@@ -17,7 +17,7 @@ public class ExceptionUtil {
      * @param argMethodName the arg method name
      *                      <p>
      *                      <p>
-     *                      misterbaykal
+     *                      Emre Baykal
      *                      <p>
      *                      12/12/16 23:29
      */

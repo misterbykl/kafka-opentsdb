@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * misterbaykal
+ * Emre Baykal
  * <p>
  * 12/12/16 22:02
  */
@@ -17,7 +17,7 @@ public class LogUtil {
     /**
      * Instantiates a new Log util.
      * <p>
-     * misterbaykal
+     * Emre Baykal
      * <p>
      * 12/12/16 22:04
      */
@@ -29,7 +29,7 @@ public class LogUtil {
      *
      * @return the logger
      * <p>
-     * misterbaykal
+     * Emre Baykal
      * <p>
      * 12/12/16 22:04
      */
@@ -42,7 +42,7 @@ public class LogUtil {
      *
      * @return the root logger
      * <p>
-     * misterbaykal
+     * Emre Baykal
      * <p>
      * 12/12/16 22:04
      */
@@ -55,7 +55,7 @@ public class LogUtil {
      *
      * @return the exception logger
      * <p>
-     * misterbaykal
+     * Emre Baykal
      * <p>
      * 12/12/16 22:04
      */

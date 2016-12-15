@@ -10,7 +10,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 /**
- * misterbaykal
+ * Emre Baykal
  * <p>
  * 13/12/16 23:44
  */
@@ -28,7 +28,7 @@ public class MainConfig implements SchedulingConfigurer {
      *
      * @return the executor
      * <p>
-     * misterbaykal
+     * Emre Baykal
      * <p>
      * 13/12/16 23:48
      */

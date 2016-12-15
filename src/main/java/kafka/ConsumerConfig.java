@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * misterbaykal
+ * Emre Baykal
  * <p>
  * 12/12/16 22:01
  */
@@ -32,7 +32,7 @@ public class ConsumerConfig {
      *
      * @return the property sources placeholder configurer
      * <p>
-     * misterbaykal
+     * Emre Baykal
      * <p>
      * 12/12/16 22:12
      */
@@ -49,7 +49,7 @@ public class ConsumerConfig {
      * @return the kafka consumer
      * @throws IOException the io exception
      *                     <p>
-     *                     misterbaykal
+     *                     Emre Baykal
      *                     <p>
      *                     12/12/16 22:14
      */
@@ -78,7 +78,7 @@ public class ConsumerConfig {
      * @return the consumer
      * <p>
      * <p>
-     * misterbaykal
+     * Emre Baykal
      * <p>
      * 12/12/16 22:19
      */
