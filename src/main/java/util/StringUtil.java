@@ -1,7 +1,7 @@
 package util;
 
 /**
- * misterbaykal
+ * Emre Baykal
  * <p>
  * 12/12/16 23:25
  */
@@ -12,7 +12,7 @@ public class StringUtil {
      * @param argStringArr the arg string arr
      * @return the string
      * <p>
-     * misterbaykal
+     * Emre Baykal
      * <p>
      * 12/12/16 23:25
      */

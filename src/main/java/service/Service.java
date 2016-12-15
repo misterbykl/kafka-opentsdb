@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * misterbaykal
+ * Emre Baykal
  * <p>
  * 12/12/16 22:34
  */
@@ -27,7 +27,7 @@ public class Service {
      * @param wordSplitter   the character to identify how to split words
      *                       <p>
      *                       <p>
-     *                       misterbaykal
+     *                       Emre Baykal
      *                       <p>
      *                       13/12/16 23:25
      */
@@ -59,7 +59,7 @@ public class Service {
      * @param value the value
      *              <p>
      *              <p>
-     *              misterbaykal
+     *              Emre Baykal
      *              <p>
      *              12/12/16 22:34
      */
