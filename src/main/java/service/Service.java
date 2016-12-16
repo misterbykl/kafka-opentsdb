@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class Service {
 
     private TSDB tsdb;
-    private String wordSplitter = ",";
+    private String wordSplitter = " ";
 
     /**
      * Instantiates a new Service.
@@ -35,7 +35,10 @@ public class Service {
         try {
             Config config = new Config(tsdbConfigPath);
             this.tsdb = new TSDB(config);
-            this.wordSplitter = wordSplitter;
+            if (!wordSplitter.equals(""))
+            {
+                this.wordSplitter = wordSplitter;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,7 +99,7 @@ public class Service {
             System.out.println("Message is saved");
         } catch (Exception e) {
             System.out.println(StringUtil.append("Exception while working on message: ", value));
-            ExceptionUtil.getStackTraceString(e, "shredAndSaveMassage");
+            ExceptionUtil.getStackTraceString(e, "parseAndSaveMassage");
         }
     }
 }

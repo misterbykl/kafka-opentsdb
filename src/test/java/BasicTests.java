@@ -21,7 +21,6 @@ public class BasicTests {
         try {
             final Config config = new Config("/path/to/opentsdbconfig");
             final TSDB tsdb = new TSDB(config);
-
             String[] words = "abc,1481171320000,41,host=web01,cpu=0".split(" ");
 
             final HashMap<String, String> tags = new HashMap<>();
@@ -30,7 +29,6 @@ public class BasicTests {
                     Tags.parse(tags, words[i]);
                 }
             }
-
             long timestamp = Tags.parseLong(words[1]);
             final String key = words[0] + tags;
 
