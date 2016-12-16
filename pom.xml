@@ -49,11 +49,22 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>mapr-releases</id>
+            <url>http://repository.mapr.com/maven/</url>
+            <snapshots><enabled>true</enabled></snapshots>
+            <releases><enabled>true</enabled></releases>
+        </repository>
+    </repositories>
+
     <properties>
         <spring.version>4.3.4.RELEASE</spring.version>
         <kafka.version>0.9.0.1</kafka.version>
-        <asynchbase.version>1.7.2</asynchbase.version>
+        <asynchbase.version>1.7.0-mapr-1603</asynchbase.version>
         <opentsdb.version>2.2.1</opentsdb.version>
+        <mapr.release.version>5.1.0-mapr</mapr.release.version>
+        <log4j.version>2.6.2</log4j.version>
     </properties>
 
     <dependencies>
@@ -90,6 +101,12 @@
             <groupId>net.opentsdb</groupId>
             <artifactId>opentsdb</artifactId>
             <version>${opentsdb.version}</version>
+        </dependency>
+        <!-- mapr -->
+        <dependency>
+            <groupId>com.mapr.hadoop</groupId>
+            <artifactId>maprfs</artifactId>
+            <version>${mapr.release.version}</version>
         </dependency>
     </dependencies>
 </project>
