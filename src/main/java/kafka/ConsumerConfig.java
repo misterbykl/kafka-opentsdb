@@ -26,6 +26,7 @@ public class ConsumerConfig {
 
     public static String CONSUMER_BOOTSTRAP_SERVERS = "bootstrap.servers";
     public static String GROUP_ID = "group.id";
+    public static String AUTO_OFFSET_RESET = "auto.offset.reset";
 
     /**
      * Arg property sources placeholder configurer property sources placeholder configurer.
@@ -55,7 +56,8 @@ public class ConsumerConfig {
      */
     @Bean
     public KafkaConsumer<String, String> createConsumer(@Value("${kafka.bootstrap.servers}") String bootstrapServers,
-                                                        @Value("${kafka.consumer.groupid}") String groupID) throws IOException {
+                                                        @Value("${kafka.consumer.groupid}") String groupID,
+                                                        @Value("${kafka.consumer.from.beginning}") String fromBeginning) throws IOException {
         String KEY_DESERIALIZER = "key.deserializer";
         String KEY_DESERIALIZER_CLASS = "org.apache.kafka.common.serialization.StringDeserializer";
         String VALUE_DESERIALIZER = "value.deserializer";
@@ -66,6 +68,7 @@ public class ConsumerConfig {
         properties.setProperty(KEY_DESERIALIZER, KEY_DESERIALIZER_CLASS);
         properties.setProperty(VALUE_DESERIALIZER, VALUE_DESERIALIZER_CLASS);
         properties.setProperty(GROUP_ID, groupID);
+        properties.setProperty(AUTO_OFFSET_RESET, Boolean.valueOf(fromBeginning) ? "earliest" : "latest");
 
         return new KafkaConsumer<>(properties);
     }
