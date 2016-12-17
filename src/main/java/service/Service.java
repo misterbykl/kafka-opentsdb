@@ -51,13 +51,13 @@ public class Service {
      * <p>
      * Parse the message and insert into OpenTSDB
      * <p>
-     * izmit.raw.9G5_DTGGH28 1481171320000 41 host=web01 cpu=0
+     * 47TI860.PV 49.31173 100 131257404790210000
+     * izmit.raw.47TI860.PV 1312574047 49.31173 confidence=100
      * <p>
      * metric : izmit.raw.9G5_DTGGH28
      * timestamp : 1481171320000 (epoch)
-     * value: 41
-     * tagkey: host=web01
-     * tagvalue: cpu=0
+     * value: 49.31173
+     * tag: confidence=100
      *
      * @param value the value
      *              <p>
@@ -68,7 +68,14 @@ public class Service {
      */
     public void parseAndSaveMessage(String value) {
         try {
-            String[] words = value.split(this.wordSplitter);
+            String[] w = value.split(this.wordSplitter);
+
+            String[] words = new String[w.length];
+            words[0] = StringUtil.append("izmit.raw.",w[0]);
+            words[1] = w[3].substring(0,10);
+            String[] temp = w[1].split("\\.");
+            words[2] = StringUtil.append(temp[0], ".", temp[1]);
+            words[3] = StringUtil.append("confidence=", w[2]);
 
             final HashMap<String, String> tags = new HashMap<>();
             for (int i = 3; i < words.length; i++) {
