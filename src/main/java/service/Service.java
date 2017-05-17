@@ -55,14 +55,6 @@ public class Service {
      * Parse and save message.
      * <p>
      * Parse the message and insert into OpenTSDB
-     * <p>
-     * 47TI860.PV 49.31173 100 131257404790210000
-     * izmit.raw.47TI860.PV 1312574047 49.31173 confidence=100
-     * <p>
-     * metric : izmit.raw.9G5_DTGGH28
-     * timestamp : 1481171320000 (epoch)
-     * value: 49.31173
-     * tag: confidence=100
      *
      * @param value the value
      *              <p>
@@ -76,11 +68,11 @@ public class Service {
             String[] w = value.split(this.wordSplitter);
 
             String[] words = new String[w.length];
-            words[0] = StringUtil.append("izmit.raw.", w[0]);
+            words[0] = StringUtil.append("a.b.", w[0]);
             words[1] = w[3].substring(0, 10);
             String[] temp = w[1].split("\\.");
             words[2] = StringUtil.append(temp[0], ".", temp[1]);
-            words[3] = StringUtil.append("confidence=", w[2]);
+            words[3] = StringUtil.append("c=", w[2]);
 
             final class Errback implements Callback<Object, Exception> {
                 public Object call(final Exception arg) {
